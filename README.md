@@ -21,7 +21,7 @@ geth -version
 abigen -version
 ```
 
-## install solc
+## Install solc
 
 Install solc by solc-select, please follow my article [here](https://liushiming.cn/article/solidity-version-manager-solc-select-introduction.html)
 
