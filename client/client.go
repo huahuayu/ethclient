@@ -8,6 +8,7 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/huahuayu/ethclient/contract/hbtoken"
 	"log"
+	"math/big"
 	"time"
 )
 
@@ -52,5 +53,5 @@ func ContractInvoke() {
 	if err != nil {
 		log.Fatal("contract interaction failed: ", err.Error())
 	}
-	fmt.Println(balance)
+	fmt.Println("HB token balance: ", balance.Div(balance, big.NewInt(1e18)))
 }

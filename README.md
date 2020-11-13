@@ -88,7 +88,8 @@ var(
 
 func Init() {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-	EthClient, err := ethclient.DialContext(ctx, "https://mainnet.infura.io/v3/e9d43fcc8b60466c9b8c6c5b8215475c")
+	var err error
+	EthClient, err = ethclient.DialContext(ctx, "https://mainnet.infura.io/v3/e9d43fcc8b60466c9b8c6c5b8215475c")
 	defer cancel()
 	if err != nil {
 		log.Fatal(err)
@@ -101,7 +102,7 @@ func Init() {
 
 	tx, pending, _ := EthClient.TransactionByHash(ctx, common.HexToHash("0xbff5fa4aa3b503b9ae2b2b89332bb1cec736bac96c9eba30fb7f54522496a570"))
 	if !pending {
-		fmt.Println("tx cost: ",tx.Cost())
+		fmt.Println("tx cost: ", tx.Cost())
 	}
 }
 ```
@@ -113,22 +114,22 @@ Interact with contract by the contract go file we generated.
 ```go
 func ContractInvoke(){
 	address := common.HexToAddress("0x6f259637dcD74C767781E37Bc6133cd6A68aa161")
-	instance, err := hbtoken.NewHbtoken(address,EthClient)
+	instance, err := hbtoken.NewHbtoken(address, EthClient)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	name, err := instance.Name(&bind.CallOpts{})
-	if err != nil{
-		log.Fatal("get token name failed: " ,err.Error())
+	if err != nil {
+		log.Fatal("get token name failed: ", err.Error())
 	}
 	fmt.Println("token name: ", name)
 
-	balance, err := instance.BalanceOf(&bind.CallOpts{Pending: false,}, common.HexToAddress("0x46705dfff24256421a05d056c29e81bdc09723b8"))
-	if err != nil{
-		log.Fatal("contract interaction failed: ",err.Error())
+	balance, err := instance.BalanceOf(&bind.CallOpts{Pending: false}, common.HexToAddress("0x46705dfff24256421a05d056c29e81bdc09723b8"))
+	if err != nil {
+		log.Fatal("contract interaction failed: ", err.Error())
 	}
-	fmt.Println(balance)
+	fmt.Println("HB token balance: ",balance.Div(balance,big.NewInt(1e18)))
 }
 ```
 
@@ -136,4 +137,14 @@ func ContractInvoke(){
 
 ```bash
 go run main.go
+```
+
+output sample:
+
+```bash
+latest blockNum:  11249327
+tx cost:  1140000087540000
+token name:  HuobiToken
+HB token balance:  1487479
+
 ```
