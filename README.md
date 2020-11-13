@@ -146,5 +146,4 @@ latest blockNum:  11249327
 tx cost:  1140000087540000
 token name:  HuobiToken
 HB token balance:  1487479
-
 ```
